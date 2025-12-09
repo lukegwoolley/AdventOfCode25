@@ -44,7 +44,8 @@ data = pd.DataFrame(distances_array, columns=junction_boxes, index=junction_boxe
 
 circuit = []
 boxes_left = True
-while boxes_left:
+cables = 0
+while cables < 10:
     min_distance = float("inf")
     for i in range(len(distances_array)):
         for j in range(len(distances_array[i])):
@@ -57,16 +58,18 @@ while boxes_left:
         #set the distance to inf so it is not chosen again
         distances_array[min_i][min_j] = float("inf")
         distances_array[min_j][min_i] = float("inf")
-        continue  
+        continue
+    if not any(junction_boxes[min_i] in pair for pair in circuit) or not any(junction_boxes[min_j] in pair for pair in circuit):
+        cables += 1  
     circuit.append((junction_boxes[min_i], junction_boxes[min_j]))
     #set the distance to inf so it is not chosen again
     distances_array[min_i][min_j] = float("inf")
     distances_array[min_j][min_i] = float("inf")
-    # Check for any junction_boxes not in circuit
+    """# Check for any junction_boxes not in circuit
     boxes_in_circuit = set()
     for pair in circuit:
         boxes_in_circuit.update(pair)
-    boxes_left = [box for box in junction_boxes if box not in boxes_in_circuit]
+    boxes_left = [box for box in junction_boxes if box not in boxes_in_circuit]"""
 
 
 """circuit = []
